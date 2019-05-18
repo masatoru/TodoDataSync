@@ -1,6 +1,9 @@
 ﻿using System;
 using System.IO;
-using TodoDataSync.Data;
+using Microsoft.AppCenter;
+using Microsoft.AppCenter.Data;
+using TodoDataSync.Models;
+using TodoDataSync.Services;
 using TodoDataSync.Views;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -24,23 +27,13 @@ namespace TodoDataSync
             MainPage = nav;
         }
 
-        public static TodoItemDatabase Database
-        {
-            get
-            {
-                if (database == null)
-                {
-                    database = new TodoItemDatabase(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "TodoSQLite.db3"));
-                }
-                return database;
-            }
-        }
-
         public int ResumeAtTodoId { get; set; }
 
         protected override void OnStart()
         {
-            //Debug.WriteLine("OnStart");
+            AppCenter.Start($"android={AppCenterConfiguration.Android};" +
+                            $"ios={AppCenterConfiguration.iOS}",
+                typeof(Microsoft.AppCenter.Data.Data));
 
             //// always re-set when the app starts
             //// users expect this (usually)
