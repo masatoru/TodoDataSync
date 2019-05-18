@@ -13,12 +13,13 @@ namespace TodoDataSync.Views
 			InitializeComponent();
 		}
 
+        /// <summary>
+        /// Get a list when Appearing
+        /// </summary>
 		protected override async void OnAppearing()
 		{
 			base.OnAppearing();
 
-			// Reset the 'resume' id, since we just want to re-start here
-			((App)App.Current).ResumeAtTodoId = -1;
 			listView.ItemsSource = await TodoItemDatabase.Instance.GetItemsAsync();
 		}
 
