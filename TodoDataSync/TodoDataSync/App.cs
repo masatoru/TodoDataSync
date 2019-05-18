@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using Microsoft.AppCenter;
+using Microsoft.AppCenter.Auth;
 using Microsoft.AppCenter.Data;
 using TodoDataSync.Models;
 using TodoDataSync.Services;
@@ -30,7 +31,8 @@ namespace TodoDataSync
             // Setup AppCenter
             AppCenter.Start($"android={AppCenterConfiguration.Android};" +
                             $"ios={AppCenterConfiguration.iOS}",
-                typeof(Microsoft.AppCenter.Data.Data));
+                typeof(Data),
+                typeof(Auth));
         }
     }
 }

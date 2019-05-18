@@ -1,5 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="1" android:versionName="1.0" package="com.companyname.TodoDataSync">
-    <uses-sdk android:minSdkVersion="21" android:targetSdkVersion="27" />
-    <application android:label="TodoDataSync.Android"></application>
+  <uses-sdk android:minSdkVersion="21" android:targetSdkVersion="27" />
+  <application android:label="TodoDataSync.Android"></application>
+
+  <activity android:name="com.microsoft.identity.client.BrowserTabActivity">
+    <intent-filter>
+      <action android:name="android.intent.action.VIEW" />
+
+      <category android:name="android.intent.category.DEFAULT" />
+      <category android:name="android.intent.category.BROWSABLE" />
+
+      <data
+        android:host="auth"
+        android:scheme="msala966dbc2-be1a-4374-838a-86520067e7a7" />
+    </intent-filter>
+  </activity>
+  <activity android:name="com.microsoft.identity.client.BrowserTabActivity">
+    <intent-filter>
+      <action android:name="android.intent.action.VIEW" />
+      <category android:name="android.intent.category.DEFAULT" />
+      <category android:name="android.intent.category.BROWSABLE" />
+      <data android:host="auth" android:scheme="msala{Your AppCenter Key}" />
+    </intent-filter>
+  </activity>
 </manifest>
