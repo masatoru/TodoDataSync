@@ -11,6 +11,10 @@ namespace TodoDataSync.Services
     {
         public static TodoItemDatabase Instance { get; } = new TodoItemDatabase();
 
+        /// <summary>
+        /// Get a list from database.
+        /// </summary>
+        /// <returns></returns>
         public async Task<List<TodoItem>> GetItemsAsync()
         {
             var list = new List<TodoItem>();
@@ -25,18 +29,32 @@ namespace TodoDataSync.Services
             return list;
         }
 
+        /// <summary>
+        /// Get a list database for not done.
+        /// </summary>
+        /// <returns></returns>
         public async Task<List<TodoItem>> GetItemsNotDoneAsync()
         {
             var list = await GetItemsAsync();
             return list.Where(m => !m.Done).ToList();
         }
 
+        /// <summary>
+        /// Get an item from database.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public async Task<TodoItem> GetItemAsync(string id)
         {
             var list = await GetItemsAsync();
             return list.Where(i => i.Id.ToString() == id).FirstOrDefault();
         }
 
+        /// <summary>
+        /// Add or save a item.
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns></returns>
         public async Task SaveItemAsync(TodoItem item)
         {
             if (string.IsNullOrEmpty(item.Id.ToString()))
@@ -49,6 +67,11 @@ namespace TodoDataSync.Services
             }
         }
 
+        /// <summary>
+        /// Delete an item.
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns></returns>
         public Task<string> DeleteItemAsync(TodoItem item)
         {
             throw new NotImplementedException();
