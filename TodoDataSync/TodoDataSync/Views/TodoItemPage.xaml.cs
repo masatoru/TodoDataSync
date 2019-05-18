@@ -1,5 +1,6 @@
 ﻿using System;
 using TodoDataSync.Models;
+using TodoDataSync.Services;
 using Xamarin.Forms;
 
 namespace TodoDataSync.Views
@@ -14,14 +15,14 @@ namespace TodoDataSync.Views
 		async void OnSaveClicked(object sender, EventArgs e)
 		{
 			var todoItem = (TodoItem)BindingContext;
-			await App.Database.SaveItemAsync(todoItem);
+			await TodoItemDatabase.Instance.SaveItemAsync(todoItem);
 			await Navigation.PopAsync();
 		}
 
 		async void OnDeleteClicked(object sender, EventArgs e)
 		{
 			var todoItem = (TodoItem)BindingContext;
-			await App.Database.DeleteItemAsync(todoItem);
+			await TodoItemDatabase.Instance.DeleteItemAsync(todoItem);
 			await Navigation.PopAsync();
 		}
 

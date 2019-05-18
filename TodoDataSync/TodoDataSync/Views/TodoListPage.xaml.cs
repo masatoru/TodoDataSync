@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using TodoDataSync.Models;
+using TodoDataSync.Services;
 using Xamarin.Forms;
 
 namespace TodoDataSync.Views
@@ -18,7 +19,7 @@ namespace TodoDataSync.Views
 
 			// Reset the 'resume' id, since we just want to re-start here
 			((App)App.Current).ResumeAtTodoId = -1;
-			listView.ItemsSource = await App.Database.GetItemsAsync();
+			listView.ItemsSource = await TodoItemDatabase.Instance.GetItemsAsync();
 		}
 
 		async void OnItemAdded(object sender, EventArgs e)

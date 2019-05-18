@@ -1,11 +1,11 @@
-﻿using SQLite;
+﻿
+using System;
 
 namespace TodoDataSync.Models
 {
     public class TodoItem
     {
-        [PrimaryKey, AutoIncrement]
-        public int ID { get; set; }
+        public Guid Id { get; set; } = Guid.NewGuid();
         public string Name { get; set; }
         public string Notes { get; set; }
         public bool Done { get; set; }
