@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Diagnostics;
 using Microsoft.AppCenter.Auth;
 using TodoDataSync.Models;
@@ -21,7 +21,7 @@ namespace TodoDataSync.Views
 		{
 			base.OnAppearing();
 
-//			listView.ItemsSource = await TodoItemDatabase.Instance.GetItemsAsync();
+			listView.ItemsSource = await TodoItemDatabase.Instance.GetItemsAsync();
 		}
 
 		async void OnItemAdded(object sender, EventArgs e)
@@ -47,8 +47,6 @@ namespace TodoDataSync.Views
 
         async void OnListItemSelected(object sender, SelectedItemChangedEventArgs e)
 		{
-            //((App)App.Current).ResumeAtTodoId = (e.SelectedItem as TodoItem).ID;
-            //Debug.WriteLine("setting ResumeAtTodoId = " + (e.SelectedItem as TodoItem).ID);
             if (e.SelectedItem != null)
             {
                 await Navigation.PushAsync(new TodoItemPage

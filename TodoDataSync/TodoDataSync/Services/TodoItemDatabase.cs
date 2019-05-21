@@ -18,13 +18,29 @@ namespace TodoDataSync.Services
         public async Task<List<TodoItem>> GetItemsAsync()
         {
             var list = new List<TodoItem>();
-            var result = await Data.ListAsync<TodoItem>(DefaultPartitions.UserDocuments);
-            list.AddRange(result.CurrentPage.Items.Select(x => x.DeserializedValue));
-            while (result.HasNextPage)
+            try
             {
-                await result.GetNextPageAsync();
+                var result = await Data.ListAsync<TodoItem>(DefaultPartitions.UserDocuments);
+                if (result.CurrentPage == null)
+                {
+                    return list;
+                }
+
                 list.AddRange(result.CurrentPage.Items.Select(x => x.DeserializedValue));
+                while (result.HasNextPage)
+                {
+                    await result.GetNextPageAsync();
+                    list.AddRange(result.CurrentPage.Items.Select(x => x.DeserializedValue));
+                }
+
+//                var result = await Data.ReadAsync<List<TodoItem>>("DataTest.Android-collection", "DataTest.Android-database" ,new ReadOptions(TimeToLive.Infinite));
+//                list.AddRange(result.DeserializedValue);
             }
+            catch (Exception ex)
+            {
+                await (App.Current as App).MainPage.DisplayAlert("Error", ex.Message, "Close");
+            }
+
 
             return list;
         }
@@ -57,13 +73,22 @@ namespace TodoDataSync.Services
         /// <returns></returns>
         public async Task SaveItemAsync(TodoItem item)
         {
-            if (string.IsNullOrEmpty(item.Id.ToString()))
+            try
             {
-                throw new NotImplementedException();
+                // new item if id is null.
+                if (string.IsNullOrEmpty(item.Id.ToString()))
+                {
+                    item.Id = Guid.NewGuid();
+                    await Data.CreateAsync(item.Id.ToString(), item, DefaultPartitions.UserDocuments, new WriteOptions(TimeToLive.Infinite));
+                }
+                else
+                {
+                    await Data.ReplaceAsync(item.Id.ToString(), item, DefaultPartitions.UserDocuments, new WriteOptions(TimeToLive.Infinite));
+                }
             }
-            else
+            catch (Exception ex)
             {
-            await Data.CreateAsync(item.Id.ToString(), item, DefaultPartitions.UserDocuments);
+                await (App.Current as App).MainPage.DisplayAlert("Error", ex.Message, "Close");
             }
         }
 
