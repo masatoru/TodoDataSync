@@ -1,7 +1,9 @@
 ﻿using System;
 using System.IO;
 using Microsoft.AppCenter;
+using Microsoft.AppCenter.Analytics;
 using Microsoft.AppCenter.Auth;
+using Microsoft.AppCenter.Crashes;
 using Microsoft.AppCenter.Data;
 using TodoDataSync.Models;
 using TodoDataSync.Services;
@@ -32,7 +34,9 @@ namespace TodoDataSync
             AppCenter.Start($"android={AppCenterConfiguration.Android};" +
                             $"ios={AppCenterConfiguration.iOS}",
                 typeof(Data),
-                typeof(Auth));
+                typeof(Auth),
+                typeof(Analytics),
+                typeof(Crashes));
         }
     }
 }
