@@ -32,9 +32,6 @@ namespace TodoDataSync.Services
                     await result.GetNextPageAsync();
                     list.AddRange(result.CurrentPage.Items.Select(x => x.DeserializedValue));
                 }
-
-//                var result = await Data.ReadAsync<List<TodoItem>>("DataTest.Android-collection", "DataTest.Android-database" ,new ReadOptions(TimeToLive.Infinite));
-//                list.AddRange(result.DeserializedValue);
             }
             catch (Exception ex)
             {

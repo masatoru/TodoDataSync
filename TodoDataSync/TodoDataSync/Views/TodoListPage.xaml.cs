@@ -1,6 +1,9 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using Microsoft.AppCenter.Analytics;
 using Microsoft.AppCenter.Auth;
+using Microsoft.AppCenter.Crashes;
 using TodoDataSync.Models;
 using TodoDataSync.Services;
 using Xamarin.Forms;
@@ -8,45 +11,62 @@ using Xamarin.Forms;
 namespace TodoDataSync.Views
 {
     public partial class TodoListPage : ContentPage
-	{
-		public TodoListPage()
-		{
-			InitializeComponent();
-		}
+    {
+        public TodoListPage()
+        {
+            InitializeComponent();
+        }
 
         /// <summary>
         /// Get a list when Appearing
         /// </summary>
 		protected override async void OnAppearing()
-		{
-			base.OnAppearing();
+        {
+            base.OnAppearing();
 
-			listView.ItemsSource = await TodoItemDatabase.Instance.GetItemsAsync();
-		}
+            listView.ItemsSource = await TodoItemDatabase.Instance.GetItemsAsync();
+        }
 
-		async void OnItemAdded(object sender, EventArgs e)
-		{
-			await Navigation.PushAsync(new TodoItemPage
-			{
-				BindingContext = new TodoItem()
-			});
-		}
+        async void OnItemAdded(object sender, EventArgs e)
+        {
+            await Navigation.PushAsync(new TodoItemPage
+            {
+                BindingContext = new TodoItem()
+            });
+        }
 
         async void OnLogin(object sender, EventArgs e)
         {
             try
             {
                 var user = await Auth.SignInAsync();
-                await DisplayAlert("User", $"{user.AccountId}", "Close");
+
+                Analytics.TrackEvent("OnLogin", new Dictionary<string, string>
+                {
+                    ["User"] = user.AccountId.Substring(0, 10),
+                });
+
+                await DisplayAlert("User", $"{user.AccountId.Substring(0,10)}", "Close");
             }
             catch (Exception ex)
             {
+                Analytics.TrackEvent("OnLogin", new Dictionary<string, string>
+                {
+                    ["Error"] = ex.Message,
+                });
+                Crashes.TrackError(ex);
+
                 await DisplayAlert("Error", ex.Message, "Close");
             }
         }
 
+        async void OnCrash(object sender, EventArgs e)
+        {
+            Crashes.GenerateTestCrash();
+        }
+
         async void OnListItemSelected(object sender, SelectedItemChangedEventArgs e)
-		{
+        {
             if (e.SelectedItem != null)
             {
                 await Navigation.PushAsync(new TodoItemPage
@@ -54,6 +74,6 @@ namespace TodoDataSync.Views
                     BindingContext = e.SelectedItem as TodoItem
                 });
             }
-		}
-	}
+        }
+    }
 }
