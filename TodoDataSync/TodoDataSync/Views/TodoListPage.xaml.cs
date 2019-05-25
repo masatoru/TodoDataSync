@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Threading.Tasks;
 using Microsoft.AppCenter.Analytics;
 using Microsoft.AppCenter.Auth;
 using Microsoft.AppCenter.Crashes;
@@ -24,7 +25,19 @@ namespace TodoDataSync.Views
         {
             base.OnAppearing();
 
-            listView.ItemsSource = await TodoItemDatabase.Instance.GetItemsAsync();
+            await UpdateList();
+        }
+
+        private async Task UpdateList()
+        {
+            try
+            {
+                listView.ItemsSource = await TodoItemDatabase.Instance.GetItemsAsync();
+            }
+            catch (Exception ex)
+            {
+                // do nothing
+            }
         }
 
         async void OnItemAdded(object sender, EventArgs e)
@@ -47,6 +60,8 @@ namespace TodoDataSync.Views
                 });
 
                 await DisplayAlert("User", $"{user.AccountId.Substring(0,10)}", "Close");
+
+                await UpdateList();
             }
             catch (Exception ex)
             {
