@@ -18,26 +18,18 @@ namespace TodoDataSync.Services
         public async Task<List<TodoItem>> GetItemsAsync()
         {
             var list = new List<TodoItem>();
-            try
+            var result = await Data.ListAsync<TodoItem>(DefaultPartitions.UserDocuments);
+            if (result.CurrentPage == null)
             {
-                var result = await Data.ListAsync<TodoItem>(DefaultPartitions.UserDocuments);
-                if (result.CurrentPage == null)
-                {
-                    return list;
-                }
+                return list;
+            }
 
+            list.AddRange(result.CurrentPage.Items.Select(x => x.DeserializedValue));
+            while (result.HasNextPage)
+            {
+                await result.GetNextPageAsync();
                 list.AddRange(result.CurrentPage.Items.Select(x => x.DeserializedValue));
-                while (result.HasNextPage)
-                {
-                    await result.GetNextPageAsync();
-                    list.AddRange(result.CurrentPage.Items.Select(x => x.DeserializedValue));
-                }
             }
-            catch (Exception ex)
-            {
-                await (App.Current as App).MainPage.DisplayAlert("Error", ex.Message, "Close");
-            }
-
 
             return list;
         }
@@ -73,7 +65,7 @@ namespace TodoDataSync.Services
             try
             {
                 // new item if id is null.
-                if (string.IsNullOrEmpty(item.Id.ToString()))
+                if ( Guid.Empty==item.Id)
                 {
                     item.Id = Guid.NewGuid();
                     await Data.CreateAsync(item.Id.ToString(), item, DefaultPartitions.UserDocuments, new WriteOptions(TimeToLive.Infinite));

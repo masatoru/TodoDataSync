@@ -5,6 +5,8 @@
         </ToolbarItem>
         <ToolbarItem Text="Login" Clicked="OnLogin">
         </ToolbarItem>
+        <ToolbarItem Text="Logout" Clicked="OnLogout">
+        </ToolbarItem>
         <ToolbarItem Text="+" Clicked="OnItemAdded">
             <ToolbarItem.Icon>
                 <OnPlatform x:TypeArguments="FileImageSource">
@@ -18,7 +20,7 @@
             <DataTemplate>
                 <ViewCell>
                     <StackLayout Margin="20,0,0,0" Orientation="Horizontal" HorizontalOptions="FillAndExpand">
-                        <Label Text="{Binding Name}" VerticalTextAlignment="Center" HorizontalOptions="StartAndExpand" />
+                        <Label Text="{Binding Name}" FontSize="Large" VerticalTextAlignment="Center" HorizontalOptions="StartAndExpand" />
                         <Image Source="check.png" HorizontalOptions="End" IsVisible="{Binding Done}" />
                     </StackLayout>
                 </ViewCell>
