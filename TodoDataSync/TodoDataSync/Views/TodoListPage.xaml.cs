@@ -48,6 +48,11 @@ namespace TodoDataSync.Views
             });
         }
 
+        void OnLogout(object sender, EventArgs e)
+        {
+            Auth.SignOut();
+        }
+
         async void OnLogin(object sender, EventArgs e)
         {
             try
@@ -59,7 +64,7 @@ namespace TodoDataSync.Views
                     ["User"] = user.AccountId.Substring(0, 10),
                 });
 
-                await DisplayAlert("User", $"{user.AccountId.Substring(0,10)}", "Close");
+                await DisplayAlert("User", $"{user.AccountId.Substring(0, 10)}", "Close");
 
                 await UpdateList();
             }
