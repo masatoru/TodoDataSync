@@ -1,15 +1,12 @@
-﻿using System;
-using System.IO;
-using Microsoft.AppCenter;
+﻿using Microsoft.AppCenter;
 using Microsoft.AppCenter.Analytics;
 using Microsoft.AppCenter.Auth;
 using Microsoft.AppCenter.Crashes;
 using Microsoft.AppCenter.Data;
+using Microsoft.AppCenter.Push;
 using TodoDataSync.Models;
-using TodoDataSync.Services;
 using TodoDataSync.Views;
 using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
 
 namespace TodoDataSync
 {
@@ -36,7 +33,8 @@ namespace TodoDataSync
                 typeof(Data),
                 typeof(Auth),
                 typeof(Analytics),
-                typeof(Crashes));
+                typeof(Crashes),
+                typeof(Push));
         }
     }
 }
