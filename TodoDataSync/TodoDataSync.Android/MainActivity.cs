@@ -6,6 +6,7 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using Android.OS;
+using Microsoft.AppCenter.Push;
 
 namespace TodoDataSync.Droid
 {
@@ -28,6 +29,12 @@ namespace TodoDataSync.Droid
             Xamarin.Essentials.Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults);
 
             base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
+
+        protected override void OnNewIntent(Android.Content.Intent intent)
+        {
+            base.OnNewIntent(intent);
+            Push.CheckLaunchedFromNotification(this, intent);
         }
     }
 }
