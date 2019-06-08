@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-GOOGLE_JSON_FILE=$APPCENTER_SOURCE_DIRECTORY/TodoDataSync/TodoDataSync/TodoDataSync.Android/google-services.json
+GOOGLE_JSON_FILE=$APPCENTER_SOURCE_DIRECTORY/TodoDataSync/TodoDataSync.Android/google-services.json
 
 echo "PATH=" $GOOGLE_JSON_FILE
 
@@ -15,7 +15,7 @@ then
 fi
 
 
-ANDROID_MANIFEST_FILE=$APPCENTER_SOURCE_DIRECTORY/TodoDataSync/TodoDataSync/TodoDataSync.Android/Properties/AndroidManifest.xml
+ANDROID_MANIFEST_FILE=$APPCENTER_SOURCE_DIRECTORY/TodoDataSync/TodoDataSync.Android/Properties/AndroidManifest.xml
 
 if [ -e "$ANDROID_MANIFEST_FILE" ]
 then
@@ -27,7 +27,7 @@ then
 fi
 
 
-APP_CONSTANT_FILE=$APPCENTER_SOURCE_DIRECTORY/TodoDataSync/TodoDataSync/TodoDataSync/Models/AppCenterConfiguration.cs
+APP_CONSTANT_FILE=$APPCENTER_SOURCE_DIRECTORY/TodoDataSync/TodoDataSync/Models/AppCenterConfiguration.cs
 
 if [ -e "$APP_CONSTANT_FILE" ]
 then
