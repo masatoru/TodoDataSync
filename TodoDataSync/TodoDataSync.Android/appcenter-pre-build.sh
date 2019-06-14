@@ -22,7 +22,7 @@ echo "PATH=" $ANDROID_MANIFEST_FILE
 if [ -e "$ANDROID_MANIFEST_FILE" ]
 then
     sed -i '' 's#package="[-A-Za-z0-9:_./]*"#package="'$ANDROID_PACKAGE_NAME'"#' $ANDROID_MANIFEST_FILE
-    sed -i '' 's#android:scheme="[ -A-Za-z0-9:_./]*"#android:scheme="msal'$APPCENTER_KEY_ANDROID'"#' $ANDROID_MANIFEST_FILE
+    sed -i '' 's#android:scheme="[-A-Za-z0-9:_./]*"#android:scheme="msal'$APPCENTER_KEY_ANDROID'"#' $ANDROID_MANIFEST_FILE
 
     echo "File content:"
     cat $ANDROID_MANIFEST_FILE
