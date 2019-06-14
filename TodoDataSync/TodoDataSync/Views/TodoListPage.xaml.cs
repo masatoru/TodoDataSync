@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using Microsoft.AppCenter;
 using Microsoft.AppCenter.Analytics;
 using Microsoft.AppCenter.Auth;
 using Microsoft.AppCenter.Crashes;
@@ -25,11 +26,30 @@ namespace TodoDataSync.Views
         {
             base.OnAppearing();
 
+            await SignIn();
+
             await UpdateList();
         }
 
+        async Task<UserInformation> SignIn()
+        {
+            var user = (Application.Current as App)?.UserInfo;
+            try
+            {
+                user = await Auth.SignInAsync();
+            }
+            catch (Exception e)
+            {
+                // Do something with sign-in failure.
+            }
+
+            return user;
+        }
+
+
         private async Task UpdateList()
         {
+            this.IsBusy = true;
             try
             {
                 listView.ItemsSource = await TodoItemDatabase.Instance.GetItemsAsync();
@@ -37,6 +57,10 @@ namespace TodoDataSync.Views
             catch (Exception ex)
             {
                 // do nothing
+            }
+            finally
+            {
+                this.IsBusy = false;
             }
         }
 
@@ -48,23 +72,28 @@ namespace TodoDataSync.Views
             });
         }
 
-        void OnLogout(object sender, EventArgs e)
+        async void OnLogout(object sender, EventArgs e)
         {
             Auth.SignOut();
+
+            await DisplayAlert("Logout", "ログアウトしました", "OK");
+
+            listView.ItemsSource = new List<TodoItem>();
+
         }
 
         async void OnLogin(object sender, EventArgs e)
         {
             try
             {
-                var user = await Auth.SignInAsync();
+                var user = await SignIn();
 
                 Analytics.TrackEvent("OnLogin", new Dictionary<string, string>
                 {
                     ["User"] = user.AccountId.Substring(0, 10),
                 });
 
-                await DisplayAlert("User", $"{user.AccountId.Substring(0, 10)}", "Close");
+                await DisplayAlert("Login", $"ログインしました User={user.AccountId.Substring(0, user.AccountId.Length / 2)}...", "Close");
 
                 await UpdateList();
             }
@@ -76,7 +105,7 @@ namespace TodoDataSync.Views
                 });
                 Crashes.TrackError(ex);
 
-                await DisplayAlert("Error", ex.Message, "Close");
+                await DisplayAlert("Error", ex.Message, "OK");
             }
         }
 
