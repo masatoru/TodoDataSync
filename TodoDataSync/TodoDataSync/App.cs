@@ -13,6 +13,8 @@ namespace TodoDataSync
 {
     public class App : Application
     {
+        public UserInformation UserInfo { get; set; }
+
         public App()
         {
             Resources = new ResourceDictionary();
@@ -32,6 +34,7 @@ namespace TodoDataSync
             if (!AppCenter.Configured)
             {
                 Push.PushNotificationReceived += this.Push_PushNotificationReceived;
+
             }
 
             // Setup AppCenter
@@ -42,6 +45,7 @@ namespace TodoDataSync
                 typeof(Analytics),
                 typeof(Crashes),
                 typeof(Push));
+
         }
 
         private async void Push_PushNotificationReceived(object sender, PushNotificationReceivedEventArgs e)
