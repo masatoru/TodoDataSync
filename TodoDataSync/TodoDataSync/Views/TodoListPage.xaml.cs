@@ -1,4 +1,4 @@
-using System;
+Ôªøusing System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading.Tasks;
@@ -76,7 +76,7 @@ namespace TodoDataSync.Views
         {
             Auth.SignOut();
 
-            await DisplayAlert("Logout", "ÉçÉOÉAÉEÉgÇµÇ‹ÇµÇΩ", "OK");
+            await DisplayAlert("Logout", "„É≠„Ç∞„Ç¢„Ç¶„Éà„Åó„Åæ„Åó„Åü", "OK");
 
             listView.ItemsSource = new List<TodoItem>();
 
@@ -93,7 +93,8 @@ namespace TodoDataSync.Views
                     ["User"] = user.AccountId.Substring(0, 10),
                 });
 
-                await DisplayAlert("Login", $"ÉçÉOÉCÉìÇµÇ‹ÇµÇΩ User={user.AccountId.Substring(0, user.AccountId.Length / 2)}...", "Close");
+                var accountId = user.AccountId.Substring(0, user.AccountId.Length / 2);
+                await DisplayAlert("Login", $"„É≠„Ç∞„Ç§„É≥„Åó„Åæ„Åó„Åü User={accountId}...", "OK");
 
                 await UpdateList();
             }
