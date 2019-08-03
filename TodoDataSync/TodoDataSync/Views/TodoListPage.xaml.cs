@@ -31,19 +31,23 @@ namespace TodoDataSync.Views
             await UpdateList();
         }
 
+
         async Task<UserInformation> SignIn()
         {
-            var user = (Application.Current as App)?.UserInfo;
-            try
+            var userInfo = (Application.Current as App)?.UserInfo;
+            if (userInfo == null || userInfo.AccountId != null)
             {
-                user = await Auth.SignInAsync();
-            }
-            catch (Exception e)
-            {
-                // Do something with sign-in failure.
+                try
+                {
+                    userInfo = await Auth.SignInAsync();
+                }
+                catch (Exception e)
+                {
+                    // Do something with sign-in failure.
+                }
             }
 
-            return user;
+            return userInfo;
         }
 
 
