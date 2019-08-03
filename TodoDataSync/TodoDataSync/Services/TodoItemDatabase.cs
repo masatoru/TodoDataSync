@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AppCenter.Data;
 using TodoDataSync.Models;
+using Xamarin.Forms.Internals;
 
 namespace TodoDataSync.Services
 {
@@ -19,18 +20,10 @@ namespace TodoDataSync.Services
         {
             var list = new List<TodoItem>();
             var result = await Data.ListAsync<TodoItem>(DefaultPartitions.UserDocuments);
-            if (result.CurrentPage == null)
+            foreach (var item in result)
             {
-                return list;
+                list.Add(item.DeserializedValue);
             }
-
-            list.AddRange(result.CurrentPage.Items.Select(x => x.DeserializedValue));
-            while (result.HasNextPage)
-            {
-                await result.GetNextPageAsync();
-                list.AddRange(result.CurrentPage.Items.Select(x => x.DeserializedValue));
-            }
-
             return list;
         }
 
@@ -77,7 +70,7 @@ namespace TodoDataSync.Services
             }
             catch (Exception ex)
             {
-                await (App.Current as App).MainPage.DisplayAlert("Error", ex.Message, "Close");
+                await (App.Current as App).MainPage.DisplayAlert("Error", ex.Message, "OK");
             }
         }
 
